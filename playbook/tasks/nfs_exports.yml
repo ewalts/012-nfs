@@ -1,0 +1,16 @@
+- name: Define NFS exports
+  become: true
+  lineinfile: 
+    path: /etc/exports
+    regexp: "{{ export.path }} {{ export.remote_host }}" 
+    line: "{{ export.value }}"
+    create: true
+    state: present
+  loop: "{{ exports }}"
+  loop_control:
+    loop_var: export
+
+- name: Reload NFS
+  become: true
+  shell: |
+    sudo exportfs -r

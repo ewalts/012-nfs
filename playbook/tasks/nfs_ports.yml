@@ -1,0 +1,29 @@
+- name: Iptables - Allow NFS tcp connections
+  become: true
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED,RELATED
+    source: "10.1.200.0/24"
+    destination_ports:
+      - "2049"
+    jump: ACCEPT
+    state: present
+
+- name: Iptables - Allow NFS udp connections
+  become: true
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: udp
+    ctstate: NEW,ESTABLISHED,RELATED
+    source: "10.1.200.0/24"
+    destination_ports:
+      - "2049"
+    jump: ACCEPT
+    state: present
+
+- name: Save
+  become: true
+  shell: |
+    sudo iptables-save > /etc/iptables/rules.v4
+    
