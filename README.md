@@ -4,13 +4,13 @@ NOTE: This is currently being updated.
 I put this together very quickly. Great for someone knowledgable in Iptables, NFS and Ansible. Others might have questions.
 
 * Task List
-    Tests:
-      Iptables chain rules exist
-      Exports exist
-    Update/Install Iptables  
-    Configure Iptables Chain rules, Save
-    Update/Install NFS Server
-    Configure Exports, Reload NFS
+    -  Tests:
+         - Iptables chain rules exist
+         - Exports exist
+    -  Update/Install Iptables  
+    -  Configure Iptables Chain rules, Save
+    -  Update/Install NFS Server
+    -  Configure Exports, Reload NFS
 
 
 Variable List
