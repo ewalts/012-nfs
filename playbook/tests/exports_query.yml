@@ -1,0 +1,13 @@
+###> This task will verify if an export already exists and flag it to be created
+- name: Check for Exports
+  become: true
+  shell: |
+    for e in $(sudo exportfs -s|awk '{print $1}'); do echo "$e"; done
+  register: expo
+
+- debug:
+    msg: "We need to create {{ e }}"
+  when: e.path not in expo.stdout_lines
+  loop: "{{ exports }}"
+  loop_control:
+    loop_var: e

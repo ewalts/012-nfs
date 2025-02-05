@@ -1,22 +1,24 @@
 - name: Configure NFS shares
-  hosts: nfs_svr
-  remote_user: eric
   gather_facts: false
   vars_files:
+    - vars/sec_vars.yml
     - vars/deployment_vars.yml
+    - vars/exports_vars.yml
+  hosts: "{{ hosts }}"
+  remote_user: "{{ rem_user }}"
   tasks:
     - name: Wait for SSH
-      ansible.builtin.wait_for:
-        port: 22
-        host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
-        search_regex: OpenSSH
-        delay: 10
-      connection: local
+      import_tasks:
+        file: tests/ssh_response.yml
 
-    - name: Iptables is present task
+    - name: Query exisiting exports
+      import_tasks:
+        file: tests/exports_query.yml
+
+    - name: Iptables present/configured
       import_tasks:
         file: tasks/nfs_ports.yml
 
-    - name: Run install nfs server task
+    - name: Nfs server present/configured
       import_tasks:
         file: tasks/nfs_exports.yml

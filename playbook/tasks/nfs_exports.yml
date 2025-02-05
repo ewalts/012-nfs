@@ -2,13 +2,15 @@
   become: true
   lineinfile: 
     path: /etc/exports
-    regexp: "{{ export.path }} {{ export.remote_host }}" 
-    line: "{{ export.value }}"
+    regexp: "{{ ex.path }} {{ ex.node }}" 
+    line: "{{ ex.path }} {{ ex.node }}{{ ex.opts }}"
     create: true
     state: present
+  ignore_errors: true
+  when: ex.path not in expo.stdout_lines
   loop: "{{ exports }}"
   loop_control:
-    loop_var: export
+    loop_var: ex
 
 - name: Reload NFS
   become: true
